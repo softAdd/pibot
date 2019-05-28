@@ -1,0 +1,18 @@
+{
+  "name": "pibot",
+  "version": "1.0.0",
+  "description": "telegram parser bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "softAdd",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.5.11",
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}
