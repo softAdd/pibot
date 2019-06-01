@@ -1,18 +1,15 @@
 version: '3.1'
 services:
-  app:
-    container_name: mongo-chat
+  bot:
     restart: unless-stopped
-    build: web
-    ports:
-      - '3700:3700'
+    image: node:lts
+    command: 'node index.js'
     depends_on:
       - mongo
   mongo:
-    container_name: mongo
     image: mongo
     restart: unless-stopped
     ports:
       - '27017:27017'
     volumes:
-      - './db/data:/data/db'
+      - './dbdata:/data/db'

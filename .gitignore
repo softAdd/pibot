@@ -1,2 +1,3 @@
 node_modules
-./db/dataYOUR-FILE-WITH-SENSITIVE-DATA
+dbdata
+YOUR-FILE-WITH-SENSITIVE-DATA
