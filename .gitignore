@@ -1,4 +1,4 @@
 node_modules
 dbdata
-.env
+dev.env
 thrash

@@ -3,12 +3,20 @@ const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
     schedule: {
-        type: String,
-        required: true
+        type: String
     },
     weatherNow: {
         type: String,
         required: true
+    },
+    weatherThreeDays: {
+        type: String
+    },
+    bitcoinToDollar: {
+        type: String
+    },
+    dollarToRub: {
+        type: String
     },
     date: {
         type: Date,
@@ -16,4 +24,4 @@ const ItemSchema = new Schema({
     }
 });
 
-module.exports = Item = mongoose.model('item', ItemSchema);
+module.exports = mongoose.model('Daily', ItemSchema);

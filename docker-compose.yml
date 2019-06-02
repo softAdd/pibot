@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    env_file: dev.env
+    volumes:
+      - ./dbdata:/data/db
+  bot:
+    build: .
+    depends_on:
+      - mongo

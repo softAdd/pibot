@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: 'dev.env'});
 const TelegramBot = require('node-telegram-bot-api');
 // const customParser = require('./js/custom_parser');
 
