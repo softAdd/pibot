@@ -1,3 +1,4 @@
 node_modules
 dbdata
-YOUR-FILE-WITH-SENSITIVE-DATA
+.env
+thrash

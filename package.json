@@ -4,7 +4,8 @@
   "description": "telegram parser bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "bot"
@@ -12,7 +13,17 @@
   "author": "softAdd",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "mongoose": "^5.5.11",
-    "node-telegram-bot-api": "^0.30.0"
-  }
+    "node-telegram-bot-api": "^0.30.0",
+    "puppeteer": "^1.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softAdd/pibot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/softAdd/pibot/issues"
+  },
+  "homepage": "https://github.com/softAdd/pibot#readme"
 }
