@@ -17,7 +17,16 @@ const bot = new TelegramBot(TOKEN, {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
-  if (msg.text === '/sub') {
+  if (msg.text === '/weather') {
+    (async function() {
+      await parser.openBrowser();
+      const message = 'Погода: ' +  await parser.weatherNow();
+      bot.sendMessage(chatId, message);
+      await parser.closeBrowser();
+    })();
+  }
+
+  if (msg.text === '/full') {
     (async function() {
       await parser.openBrowser();
       const weather = await parser.weatherNow();
@@ -28,5 +37,9 @@ bot.on('message', (msg) => {
       bot.sendMessage(chatId, message);
       await parser.closeBrowser();
     })();
+  }
+
+  if (msg.text === '/sub') {
+    // code...
   }
 });

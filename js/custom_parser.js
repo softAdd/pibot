@@ -25,7 +25,18 @@ async function universitySchedule() {
     return await page.evaluate(
         () => document.getElementById('tametable_tab9').innerText
     )
+}
 
+async function todayUniversitySchedule() {
+    const page = await this.browser.newPage();
+    await page.goto('https://www.rsvpu.ru/mobile/?v_gru=2731');
+    const date = await page.evaluate(
+        () => document.querySelector('.dateToday').innerText
+    )
+    const schedule = await page.evaluate(
+        () => document.querySelector('.tableRasp').innerText
+    )
+    return date + '\n' + schedule
 }
 
 async function bitcoinToDollar() {
@@ -62,6 +73,7 @@ function moduleStruct() {
     this.dollarToRub = dollarToRub;
     this.bitcoinToDollar = bitcoinToDollar;
     this.universitySchedule = universitySchedule;
+    this.todayUniversitySchedule = todayUniversitySchedule;
 }
 
 module.exports = moduleStruct;
