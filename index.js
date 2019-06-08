@@ -21,30 +21,31 @@ const bot = new TelegramBot(TOKEN, {
 
 const messenger = {
   '/weather': async function() {
-    // code
-  },
-  weather: async function() {
     await parser.openBrowser();
     const message = 'Погода: ' +  await parser.weatherNow();
-    // bot.sendMessage(chatId, message);
     await parser.closeBrowser();
+    return message
   },
-  full: async function() {
+  '/full': async function() {
     await parser.openBrowser();
     const weather = await parser.weatherNow();
     const btc = await parser.bitcoinToDollar();
     const dol = await parser.dollarToRub();
     const message = 'Сегодня: ' + moment().format('LLLL') + 
     '\n\nПогода: ' + weather + '\n\n' + btc + '\n' + dol;
-    // bot.sendMessage(chatId, message);
     await parser.closeBrowser();
+    return message;
   },
-  sub: async function() {
-    // code
+  '/sub': async function() {
+    // todo
   }
 }
 
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
-  // use messenger[message] here
+  (async function() {
+    if (messenger[msg.text]) {
+      bot.sendMessage(chatId, await messenger[msg.text]());
+    }
+  })();
 });
