@@ -1,6 +1,7 @@
 require('dotenv').config({ path: 'dev.env'});
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
+const db = require('./db/db');
 
 const { TOKEN } = process.env;
 const { PROXY } = process.env;
@@ -30,6 +31,7 @@ const messenger = {
     // get message from db
   },
   '/sub': async function() {
+    db.mongoose
     /*
     const sub = new Sub({
       chatId: this.chatId,
@@ -47,6 +49,7 @@ bot.on('message', (msg) => {
   // messenger.msg = msg;
   // messenger.chatId = msg.chat.id;
   // messenger.name = msg.from.first_name;
+  console.log(db.parser)
   (async function() {
     if (messenger[msg.text]) {
       bot.sendMessage(chatId, await messenger[msg.text]());
