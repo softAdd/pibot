@@ -57,6 +57,24 @@ async function dollarToRub() {
     )
 }
 
+async function messageWeather() {
+    await parser.openBrowser();
+    const message = 'Погода: ' + await parser.weatherNow();
+    await parser.closeBrowser();
+    return message
+}
+
+async function messageFull() {
+    await parser.openBrowser();
+    const weather = await parser.weatherNow();
+    const btc = await parser.bitcoinToDollar();
+    const dol = await parser.dollarToRub();
+    const message = 'Сегодня: ' + moment().format('LLLL') +
+        '\n\nПогода: ' + weather + '\n\n' + btc + '\n' + dol;
+    await parser.closeBrowser();
+    return message;
+}
+
 function moduleStruct() {
     this.browser = null;
     this.browser_running = false;
@@ -74,6 +92,8 @@ function moduleStruct() {
     this.bitcoinToDollar = bitcoinToDollar;
     this.universitySchedule = universitySchedule;
     this.todayUniversitySchedule = todayUniversitySchedule;
+    this.messageFull = messageFull;
+    this.messageWeather = messageWeather;
 }
 
 module.exports = moduleStruct;

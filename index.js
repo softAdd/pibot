@@ -1,22 +1,24 @@
-require('dotenv').config({ path: 'dev.env'});
+require('dotenv').config({
+  path: 'dev.env'
+});
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
-const db = require('./db/db');
+const MyDb = require('./db/db');
 
-const { TOKEN } = process.env;
-const { PROXY } = process.env;
+const {
+  PROXY,
+  TOKEN
+} = process.env;
 
 const bot = new TelegramBot(TOKEN, {
   polling: true,
   baseApiUrl: `https://${PROXY}/api.telegram.org`
 });
 
-// const mongoose = require('./db/db');
-
-const Sub = require('./db/models/Sub.js');
+const db = new MyDb('./db');
 
 // send data to subscribers
-setInterval(function() {
+setInterval(function () {
   if (moment().format('H') === '6') {
     // send data to subscribers
   }
@@ -24,13 +26,13 @@ setInterval(function() {
 
 
 const messenger = {
-  '/weather': async function() {
+  '/weather': async function (chatId) {
     // get message from db
   },
-  '/full': async function() {
+  '/full': async function () {
     // get message from db
   },
-  '/sub': async function() {
+  '/sub': async function () {
     db.mongoose
     /*
     const sub = new Sub({
@@ -40,7 +42,7 @@ const messenger = {
     console.log(sub)
     sub.save();
     */
-   console.log('messenger')
+    console.log('messenger')
   }
 }
 
@@ -49,10 +51,9 @@ bot.on('message', (msg) => {
   // messenger.msg = msg;
   // messenger.chatId = msg.chat.id;
   // messenger.name = msg.from.first_name;
-  console.log(db.parser)
-  (async function() {
+  (async function () {
     if (messenger[msg.text]) {
-      bot.sendMessage(chatId, await messenger[msg.text]());
+      await messenger[msg.text](chatId)
     }
   })();
 });
