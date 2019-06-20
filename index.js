@@ -3,6 +3,7 @@ require('dotenv').config({
 });
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
+const db = require('./db/db');
 
 const {
   PROXY,

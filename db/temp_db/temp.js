@@ -34,7 +34,7 @@ function initDB() {
 async function createTempJSON(file_name, func, time) {
     let obj = await func();
 
-    function updateFile(name, obj) {
+    function updateFile(file_name, obj) {
         fs.writeFile(`${__dirname}/temp_data/${file_name}.json`, JSON.stringify(obj), function (err) {
             if (err) throw new Error('Во время записи в файл произошла ошибка!')
         });
@@ -43,7 +43,7 @@ async function createTempJSON(file_name, func, time) {
 
     setInterval(async function () {
         obj = await func();
-        updateFile(name, obj);
+        updateFile(file_name, obj);
     }, time);
 }
 
