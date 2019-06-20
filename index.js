@@ -3,7 +3,6 @@ require('dotenv').config({
 });
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
-const MyDb = require('./db/db');
 
 const {
   PROXY,
@@ -15,7 +14,9 @@ const bot = new TelegramBot(TOKEN, {
   baseApiUrl: `https://${PROXY}/api.telegram.org`
 });
 
-const db = new MyDb('./db');
+// const message = 'Сегодня: ' + moment().format('LLLL') +
+// '\n\nПогода: ' + weather + '\n\n' + btc + '\n' + dol;
+// const message = 'Погода: ' + await parser.weatherNow();
 
 // send data to subscribers
 setInterval(function () {
@@ -33,7 +34,6 @@ const messenger = {
     // get message from db
   },
   '/sub': async function () {
-    db.mongoose
     /*
     const sub = new Sub({
       chatId: this.chatId,
@@ -42,7 +42,6 @@ const messenger = {
     console.log(sub)
     sub.save();
     */
-    console.log('messenger')
   }
 }
 

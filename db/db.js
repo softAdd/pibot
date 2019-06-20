@@ -24,8 +24,6 @@ mongoose.connect(CONNECT_STRING, {
     useNewUrlParser: true
 })
 
-
-
 const Info = require('./models/Info');
 
 async function getCurrentWeather() {
@@ -51,20 +49,22 @@ let options = {
 
 function initDb(path, opt) {
     rootPath = path;
-    optionts = opt;
+    options.fullInfo_timer = opt.fullInfo_timer || 0;
+    options.weather_timer = opt.weather_timer || 0;
+
     if (options.fullInfo_timer !== 0 && options.fullInfo_timer > 0) {
         setInterval(async function () {
             const doc = new Info({
-                text: await parser.messageFull()
+                text: await parser.messageFull(parser)
             });
             doc.save();
-        }, fullInfo_timer)
+        }, options.fullInfo_timer)
     }
     if (options.weather_timer !== 0 && options.weather_timer > 0) {
         setInterval(async function () {
             try {
                 const doc = {
-                    weather: await parser.messageWeather(),
+                    weather: await parser.messageWeather(parser),
                     time: `Время обновления: ${moment().format('LT')}`
                 }
                 await fs.writeFile(rootPath + '/current_weather.json', JSON.stringify(doc), function (err) {
@@ -73,7 +73,7 @@ function initDb(path, opt) {
             } catch (e) {
                 console.log(e)
             }
-        }, weather_timer)
+        }, options.weather_timer)
     }
 }
 
