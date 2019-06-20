@@ -2,10 +2,9 @@ require('dotenv').config({
     path: '../dev.env'
 });
 const mongoose = require('mongoose');
+const Temp = require('./temp_db/temp');
+const temp_db = new Temp();
 const moment = require('moment');
-const fs = require('fs');
-const ParserModule = require('../js/custom_parser');
-const parser = new ParserModule();
 
 const {
     CONNECT_STRING
@@ -40,50 +39,3 @@ function subscribe(chatId, name) {
     })
     doc.save();
 }
-
-let rootPath = '';
-let options = {
-    fullInfo_timer: 0,
-    weather_timer: 0
-}
-
-function initDb(path, opt) {
-    rootPath = path;
-    options.fullInfo_timer = opt.fullInfo_timer || 0;
-    options.weather_timer = opt.weather_timer || 0;
-
-    if (options.fullInfo_timer !== 0 && options.fullInfo_timer > 0) {
-        setInterval(async function () {
-            const doc = new Info({
-                text: await parser.messageFull(parser)
-            });
-            doc.save();
-        }, options.fullInfo_timer)
-    }
-    if (options.weather_timer !== 0 && options.weather_timer > 0) {
-        setInterval(async function () {
-            try {
-                const doc = {
-                    weather: await parser.messageWeather(parser),
-                    time: `Время обновления: ${moment().format('LT')}`
-                }
-                await fs.writeFile(rootPath + '/current_weather.json', JSON.stringify(doc), function (err) {
-                    if (err) throw new Error('Возникла ошибка при записи данных в JSON файл.');
-                })
-            } catch (e) {
-                console.log(e)
-            }
-        }, options.weather_timer)
-    }
-}
-
-function MyDb(path, options) {
-    initDb(path, options);
-    this.full = parser.messageFull;
-    this.weather = getCurrentWeather;
-    this.mongo = mongoose;
-    this.sub = subscribe;
-    this.parser = parser;
-}
-
-module.exports = MyDb;

@@ -1,6 +1,6 @@
 node_modules
 package-lock.json
-temp_db/static_data
-temp_db/temp_data
+db/temp_db/static_data
+db/temp_db/temp_data
 dbdata
 dev.env
