@@ -2,8 +2,7 @@ require('dotenv').config({
     path: '../dev.env'
 });
 const mongoose = require('mongoose');
-const Temp = require('./temp_db/temp');
-const temp_db = new Temp();
+const TempDB = require('./temp_db/temp');
 const Parser = require('../parser/parser');
 const moment = require('moment');
 
@@ -38,5 +37,11 @@ const moment = require('moment');
 
 (async function() {
     const parser = await Parser;
+    const temp_db = await TempDB;
     temp_db.createTempJSON('weather', parser.weatherNow, 10000)
 })();
+
+module.exports = {
+    tempDB: TempDB,
+    mongo: mongoose
+}

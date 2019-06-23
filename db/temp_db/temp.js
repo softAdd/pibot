@@ -1,7 +1,6 @@
 const fs = require('fs');
 
-function initDB() {
-    let is_running = true;
+async function initDB() {
     fs.stat(`${__dirname}/temp_data`, function (err, stat) {
         if (err == null) {
             console.log('temp_data загружена.');
@@ -47,13 +46,13 @@ async function createTempJSON(file_name, func, time) {
     }, time);
 }
 
-function createStatic(file, data) {
+async function createStatic(file, data) {
     fs.writeFile(`${__dirname}/static_data/${file}`, data, function (err) {
         if (err) throw new Error('Во время записи в файл произошла ошибка!')
     });
 }
 
-function appendData(file_name, data, static = true) {
+async function appendData(file_name, data, static = true) {
     let path = __dirname + '/static_data/';
     if (static === false) {
         path = _dirname + '/temp_data/';
@@ -75,9 +74,22 @@ function appendData(file_name, data, static = true) {
     });
 }
 
-module.exports = function () {
-    initDB();
-    this.createTempJSON = createTempJSON;
-    this.createStatic = createStatic;
-    this.appendData = appendData;
+async function getFiles(type) {
+    if (type === 'temp') {
+        return fs.readdirSync(__dirname + '/temp_data')
+    } else {
+        return fs.readdirSync(__dirname + '/static_data')
+    }
 }
+
+const db = {
+    createTempJSON: createTempJSON,
+    createStatic: createStatic,
+    appendData: appendData,
+    getFiles: getFiles
+}
+
+module.exports = (async function() {
+    await initDB();
+    return db;
+})();
