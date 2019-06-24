@@ -6,22 +6,15 @@ const TempDB = require('./temp_db/temp');
 const Parser = require('../parser/parser');
 const moment = require('moment');
 
-// const {
-//     CONNECT_STRING
-// } = process.env;
+const {
+    CONNECT_STRING
+} = process.env;
 
-// mongoose
-//     .connect(
-//         CONNECT_STRING, {
-//             useNewUrlParser: true
-//         }
-//     )
-//     .then(() => console.log('MongoDB Connected'))
-//     .catch(err => console.log(err));
-
-// mongoose.connect(CONNECT_STRING, {
-//     useNewUrlParser: true
-// })
+mongoose.connect(CONNECT_STRING, {
+    useNewUrlParser: true
+})
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
 
 // const Info = require('./models/Info');
 
@@ -35,10 +28,18 @@ const moment = require('moment');
 //     doc.save();
 // }
 
-(async function() {
+// auto update weather every 15 mins
+(async function () {
     const parser = await Parser;
     const temp_db = await TempDB;
-    temp_db.createTempJSON('weather', parser.weatherNow, 10000)
+    console.log(await temp_db.readFile('weather.json', 'temp'));
+    moment.locale('ru');
+    temp_db.createTempJSON('weather', async function() {
+        return {
+            weather: await parser.weatherNow(),
+            time: moment().format('LT')
+        }
+    }, 15 * 60 * 1000)
 })();
 
 module.exports = {

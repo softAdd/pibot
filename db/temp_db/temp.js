@@ -82,11 +82,31 @@ async function getFiles(type) {
     }
 }
 
+async function readFile(file_name, type = 'static') {
+    return new Promise(async function(resolve, reject) {
+        let files = await getFiles('temp');
+        console.log(files);
+        files = await getFiles('temp');
+        console.log(files);
+        resolve('hi')
+    })
+    // if (type === 'temp') {
+    //     fs.readFile(__dirname + '/temp_data', (err, data) => {
+    //         if (err) throw err;
+    //         return data
+    //       });
+          
+    // } else {
+    //     console.log('Функция чтения статических файлов пока не доступна.');
+    // }
+}
+
 const db = {
     createTempJSON: createTempJSON,
     createStatic: createStatic,
     appendData: appendData,
-    getFiles: getFiles
+    getFiles: getFiles,
+    readFile: readFile
 }
 
 module.exports = (async function() {
