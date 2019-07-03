@@ -3,7 +3,7 @@ require('dotenv').config({
 });
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment');
-const db = require('./db/db');
+// const db = require('./db/db');
 
 const {
   PROXY,
@@ -15,8 +15,7 @@ const bot = new TelegramBot(TOKEN, {
   baseApiUrl: `https://${PROXY}/api.telegram.org`
 });
 
-// const message = 'Сегодня: ' + moment().format('LLLL') +
-// '\n\nПогода: ' + weather + '\n\n' + btc + '\n' + dol;
+// 
 // const message = 'Погода: ' + await parser.weatherNow();
 
 // send data to subscribers
@@ -29,12 +28,19 @@ setInterval(function () {
 
 const messenger = {
   '/weather': async function (chatId) {
-    // get message from db
+    const weatherDoc = JSON.parse(await db.readTemp('weather'));
+    const message = `Сегодня: ${weatherDoc.weather}.\nВремя обновления: ${weatherDoc.time}.\nГород: ${weatherDoc.city}.`
+    bot.sendMessage(chatId, message);
   },
-  '/full': async function () {
-    // get message from db
+  '/full': async function (chatId) {
+    const weatherDoc = JSON.parse(await db.readTemp('weather'));
+    const weather = weatherDoc.weather;
+    const btc = '';
+    const dol = '';
+    const message = 'Сегодня: ' + moment().format('LLLL') + '\n\nПогода: ' + weather + '\n\n' + btc + '\n' + dol;
+    bot.sendMessage(chatId, message);
   },
-  '/sub': async function () {
+  '/sub': async function (chatId) {
     /*
     const sub = new Sub({
       chatId: this.chatId,
@@ -43,11 +49,13 @@ const messenger = {
     console.log(sub)
     sub.save();
     */
+   bot.sendMessage(chatId, 'Вы подписались на рассылку погоды!');
   }
 }
 
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
+  console.log('Message received')
   // messenger.msg = msg;
   // messenger.chatId = msg.chat.id;
   // messenger.name = msg.from.first_name;
